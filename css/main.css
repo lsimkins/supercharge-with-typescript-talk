@@ -1,0 +1,23 @@
+body {
+  background-color: #152740;
+  font-family: Verdana !important;
+}
+
+h1, h2, h3, h4 {
+  text-transform: none !important;
+}
+
+.reveal li {
+  margin: 16px 0;
+}
+
+.reveal pre code {
+  padding: 0;
+  line-height: 1.5;
+}
+
+#ts-logo {
+  bottom: 0;
+  position: absolute;
+  width: 100px;
+}

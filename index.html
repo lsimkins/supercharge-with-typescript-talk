@@ -4,13 +4,15 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>TypeScript</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/main.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="lib/css/prism.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -23,19 +25,434 @@
 	</head>
 	<body>
 		<div class="reveal">
+			<img id="ts-logo" src="./ts.png" />
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-markdown>
+					<script type="text/template">
+						# TypeScript
+						## (Supercharge your JavaScript)
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Who am I?
+
+						- Luke Simkins
+						- Developer at Oseberg, Inc.
+						- TypeScript, JavaScript, Scala
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Goals of this Talk
+						- Basic Overview of TypeScript Features
+						- Advantages and Disadvantages of TypeScript
+						- Provide enough knowledge for you to decide whether TypeScript is appropriate for your project.
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## First, a little background...
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Last year, I tweeted this.
+						<img style="width: 50%;" src="./Tweet.png" />
+						<p class="fragment"> To all static typed language lovers...I'm sorry.</p>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						This is not about whether dynamic vs static typed languages are better.
+						It's about choosing which tool is right for your project & your team.
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						# 1. What is TypeScript?
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Superset of JavaScript
+
+						<ul>
+							<li class="fragment">JavaScript is valid TypeScript (sorta)</li>
+							<li class="fragment">Compiles to Plain JavaScript</li>
+							<li class="fragment">
+								The core rules of the language are the same.
+								<ul>
+									<li>Scoping, variable declartion, first class functions, etc.</li>
+								</ul>
+							</li>
+						</ul>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						# 2. How Does it Work?
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### What you Need to Get Started
+						1. Install TypeScript Compiler
+
+						<pre class="language-bash"><code class="language-javascript">
+							npm install -g typescript
+						</code></pre>
+
+						<pre class="language-bash"><code class="language-javascript">
+							tsc index.ts
+						</code></pre>
+
+						<p class="fragment">That's it!</p>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### What you Need (Larger Projects)
+						tsconfig.json
+
+						<pre class="language-bash"><code class="language-bash">
+							tsc --init
+						</code></pre>
+						<pre class="language-json"><code class="language-json">
+							{
+							    "compilerOptions": {
+							        "module": "commonjs",
+							        "target": "es5",
+							        "noImplicitAny": false,
+							        "sourceMap": false
+							    },
+							    "exclude": [
+							        "node_modules"
+							    ]
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Variable Declarations
+						<pre class="language-typescript"><code class="language-typescript">
+							const someConstant = 'someConstant';
+							var someVariable = 'someVariable';
+							let someBlockScopedVariable = 'someBlockScopedVariable';
+						</code></pre>
+						<p class="fragment">Yep, exactly like JavaScript.</p>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Basic type declarations
+						<pre class="language-typescript"><code class="language-typescript">
+							const myBool: boolean = true;
+							const myNumber: number = 3.1415;
+							const myString: string = 'string';
+							const myArray: any = 'I can be anything!';
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Arrays
+
+						<pre class="language-typescript"><code class="language-typescript">
+							const myArray: number[] = [0,1,2,3,4,5];
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Type Inference
+
+						<pre class="language-typescript"><code class="language-typescript">
+							const boo = true; // Compiler knows this is a boolean.
+							const str = 'string'; // Compiler knows this is a string.
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Function Declaration
+
+						<pre class="language-typescript"><code class="language-typescript">
+							function concatenate(param1: string, param2: string): string {
+								return param1 + param2;
+							}
+
+							// returns 'javascript-typescript'
+							concatenate('javascript', '-typescript');
+						</code></pre>
+
+						<p class="fragment">The compiler will enforce your api and prevent runtime errors.</p>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Function Type Signatures
+
+						<pre class="language-javascript"><code class="language-javascript">
+							// javascript
+							function readFile(path, cb) {
+								// ...what is cb called with?
+							}
+						</code></pre>
+
+						<pre class="language-javascript"><code class="language-javascript">
+							// typescript
+							function readFile(file: string, cb: (err: string, contents: Buffer) => void) {
+								// ...
+							}
+						</code></pre>
+
+						<p class="fragment">
+							Good type signatures enhance code reability by documenting your
+							api for developers reading your source code.
+						</p>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Interfaces
+						<pre class="language-typescript"><code class="language-typescript">
+							interface NamedObject {
+								name: string;
+							}
+
+							// Implementing an interface
+							class Person implements NamedObject {
+								name: string;
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Inferfaces
+
+						<pre class="language-javascript"><code class="language-javascript">
+							interface ReadFileCallback {
+								(err: string, file: Buffer) => void
+							}
+							function readFile(path: string, cb: ReadFileCallback) {
+								// ...
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Interfaces
+						<pre class="language-typescript"><code class="language-typescript">
+							interface HttpRequestHeaders {
+								accept: string;
+								acceptEncoding: string;
+								cookie?: string; // "?" denotes this property is optional
+								contentType: string;
+								origin: string;
+							}
+
+							function makeGETRequest(url: string, headers: HttpRequestHeaders) {
+								// ...
+							}
+
+							makeGETRequest(
+								'http://freekittens.com',
+								{
+									accept: 'text/plain',
+									acceptEncoding: 'utf-8',
+									contentType: 'multipart/form-data',
+									origin: 'http://needakitten.me'
+								}
+							);
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Class Declaration
+						<pre class="language-typescript"><code class="language-typescript">
+							class Person {
+								name: string;
+
+								constructor(name: string, private age: number) {
+									this.name = name;
+									// age is automatically assigned to this.age
+								}
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Modules
+						<pre class="language-typescript"><code class="language-typescript">
+							// vectorUtils.ts
+							export module VectorUtils {
+							  export function normalize(vector: number[]) {
+							    const magnitude = VectorUtils.magnitude(vector);
+							    return vector.map(n => n/magnitude);
+							  }
+
+							  export function magnitude(vector: number[]) {
+							    return Math.sqrt(
+							      vector.map(Math.pow)
+											.reduce((a, b) => a + b)
+							    );
+							  }
+							}
+
+							// Usage
+							import { VectorUtils } from './vectorUtils.ts';
+							VectorUtils.normalize([1,2,3]);
+							// Outputs [ 0.288, 0.577, 0.866 ]
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Advanced Types
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Union Types
+						<pre class="language-typescript"><code class="language-typescript">
+							const one: number | string = 1;
+							const color: 'Red' | 'Blue' = 'Blue';
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Union Types
+						<pre class="language-javascript"><code class="language-javascript">
+							function readFile(
+								file: string | number | Buffer,
+								cb: ReadFileCallback
+							) {
+								// ...
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Intersection Types
+						Combines multiple types into one. Usually used for mixins, which allows for class composition.
+
+						<pre class="language-typescript"><code class="language-typescript">
+							function extend&#60;T, U&#62;(first: T, second: U): T & U {
+								let result = &#60;T & U&#62;{};
+								for (let id in first) {
+									(&#60;any&#62;result)[id] = (&#60;any&#62;first)[id];
+								}
+								for (let id in second) {
+									if (!result.hasOwnProperty(id)) {
+										(&#60;any&#62;result)[id] = (&#60;any&#62;second)[id];
+									}
+								}
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Non-nullable types
+						<pre class="language-json"><code class="language-json">
+							{
+							    "compilerOptions": {
+							        "strictNullChecks": true
+							        // ...
+							    }
+							}
+						</code></pre>
+						<pre class="language-typescript"><code class="language-typescript">
+							const myNumber: number = undefined; // Throws a compiler error.
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Generics
+						<pre class="language-typescript"><code class="language-typescript">
+							class Node&#60;T&#62; {
+								parent?: Node&#60;T&#62;;
+								children: Node&#60;T&#62;[];
+							}
+
+							class Tree&#60;T&#62; {
+								root: Node&#60;T&#62;
+							}
+
+							const ceo = new Node&#60;Person&#62;({ children: employees });
+							const orgChart = new Tree&#60;Person&#62;({ root: ceo })
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## 3. Advantages
+						- Compile Time Errors
+						- Tooling Benefits (Code Editor)
+							- Code hinting
+						- Documentation of Source Code
+						- Improved Maintainability of Large Projects
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## 3. Disadvantages
+						- Third Party Types
+						- Compile Step
+						- "Making the Compiler Happy"
+					</script>
+				</section>
+
 			</div>
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
+		<script src="lib/js/prism.js"></script>
 
 		<script>
 			// More info https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
 				history: true,
+				transition: 'none',
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
