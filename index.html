@@ -85,14 +85,39 @@
 						## Superset of JavaScript
 
 						<ul>
-							<li class="fragment">JavaScript is valid TypeScript (sorta)</li>
-							<li class="fragment">Compiles to Plain JavaScript</li>
 							<li class="fragment">
 								The core rules of the language are the same.
 								<ul>
-									<li>Scoping, variable declartion, first class functions, etc.</li>
+									<li>Scoping, variable declaration, first class functions, etc.</li>
 								</ul>
 							</li>
+							<li class="fragment">TypeScript adds a *optional* strong, static type system to JavaScript</li>
+							<li class="fragment">Compiles to plain JavaScript</li>
+							<li class="fragment">JavaScript is valid TypeScript (sorta)</li>
+						</ul>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						##JavaScript is Dynamically Typed
+
+						<ul>
+							<li class="fragment">Type information inferred at runtime</li>
+							<li class="fragment">Offers greater flexiblity</li>
+							<li class="fragment">Runtime errors</li>
+						</ul>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						##TypeScript Adds Static Type Checking
+
+						<ul>
+							<li class="fragment">Types are checked at compile time</li>
+							<li class="fragment">Strict</li>
+							<li class="fragment">Compile Time Errors</li>
 						</ul>
 					</script>
 				</section>
@@ -108,12 +133,13 @@
 						### What you Need to Get Started
 						1. Install TypeScript Compiler
 
-						<pre class="language-bash"><code class="language-javascript">
+						<pre class="language-bash"><code class="language-bash">
 							npm install -g typescript
 						</code></pre>
 
-						<pre class="language-bash"><code class="language-javascript">
+						<pre class="language-bash"><code class="language-bash">
 							tsc index.ts
+							# Outputs index.js
 						</code></pre>
 
 						<p class="fragment">That's it!</p>
@@ -146,6 +172,12 @@
 
 				<section data-markdown>
 					<script type="text/template">
+						## Writing TypeScript
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
 						## Variable Declarations
 						<pre class="language-typescript"><code class="language-typescript">
 							const someConstant = 'someConstant';
@@ -163,7 +195,7 @@
 							const myBool: boolean = true;
 							const myNumber: number = 3.1415;
 							const myString: string = 'string';
-							const myArray: any = 'I can be anything!';
+							const anyType: any = 'I can be anything!';
 						</code></pre>
 					</script>
 				</section>
@@ -202,6 +234,18 @@
 							concatenate('javascript', '-typescript');
 						</code></pre>
 
+						<pre class="fragment language-typescript"><code class="language-typescript">
+							// Compiler error
+							// concatenate.ts(9,27): Argument of type 'number' is not assignable to parameter of type 'string'.
+							concatenate('javascript', 1);
+						</code></pre>
+
+						<pre class="fragment language-typescript"><code class="language-typescript">
+							// Compiler error
+							// concatenate.ts(8,1): Supplied parameters do not match any signature of call target.
+							concatenate('javascript');
+						</code></pre>
+
 						<p class="fragment">The compiler will enforce your api and prevent runtime errors.</p>
 					</script>
 				</section>
@@ -211,15 +255,30 @@
 						## Function Type Signatures
 
 						<pre class="language-javascript"><code class="language-javascript">
+							var callback: (err: string | null, result: number) => void;
+
+							callback = function(err, result) {
+								// do something with result
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Function Type Signatures
+
+						<pre class="language-javascript"><code class="language-javascript">
 							// javascript
-							function readFile(path, cb) {
-								// ...what is cb called with?
+							function readFile(file, cb) {
+								// what is "file"?
+								// what is "cb"?
 							}
 						</code></pre>
 
-						<pre class="language-javascript"><code class="language-javascript">
+						<pre class="fragment language-javascript"><code class="language-javascript">
 							// typescript
-							function readFile(file: string, cb: (err: string, contents: Buffer) => void) {
+							function readFile(file: string, cb: (err: string | null, contents: Buffer) => void) {
 								// ...
 							}
 						</code></pre>
@@ -233,16 +292,31 @@
 
 				<section data-markdown>
 					<script type="text/template">
+						## Interfaces in TypeScript
+
+						- Describe a type <!-- .element: class="fragment" -->
+						- Similar to a class, except they don't include an implementation <!-- .element: class="fragment" -->
+						- Interfaces offer you a way to define a contracts in your code. They <!-- .element: class="fragment" -->
+							document the shape of objects and types. <!-- .element: class="fragment" -->
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
 						## Interfaces
+
 						<pre class="language-typescript"><code class="language-typescript">
-							interface NamedObject {
-								name: string;
+							interface LightBoxOptions {
+								image: string;
+								width?: number;
+								height?: number;
+								animation?: 'fade' | 'slide' | 'none'
 							}
 
-							// Implementing an interface
-							class Person implements NamedObject {
-								name: string;
-							}
+							slideshow.initialize({image: 'kitting.png'});
+
+							// Whoops, the compiler will alert you of your mistake.
+							slideshow.initialize({img: 'kitten.png'});
 						</code></pre>
 					</script>
 				</section>
@@ -294,7 +368,21 @@
 				<section data-markdown>
 					<script type="text/template">
 						## Class Declaration
+
 						<pre class="language-typescript"><code class="language-typescript">
+							class Person {
+								name: string;
+								private age: number;
+
+								constructor(name: string, age: number) {
+									this.name = name;
+									this.age = age;
+								}
+							}
+						</code></pre>
+
+						<pre class="fragment language-typescript"><code class="language-typescript">
+							// Same as above
 							class Person {
 								name: string;
 
@@ -303,6 +391,25 @@
 									// age is automatically assigned to this.age
 								}
 							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Modules
+						<pre class="language-typescript"><code class="language-typescript">
+							// config.ts
+							export module Config {
+							  // export module contents
+								export const name = 'servername';
+								export const port = 80;
+							}
+
+							// Usage
+							import { Config } from './config';
+							Config.name; // 'servername'
+							Config.port; // 80
 						</code></pre>
 					</script>
 				</section>
@@ -343,6 +450,7 @@
 				<section data-markdown>
 					<script type="text/template">
 						## Union Types
+						Describes a value that can be one of several types.
 						<pre class="language-typescript"><code class="language-typescript">
 							const one: number | string = 1;
 							const color: 'Red' | 'Blue' = 'Blue';
@@ -424,20 +532,26 @@
 				<section data-markdown>
 					<script type="text/template">
 						## 3. Advantages
-						- Compile Time Errors
-						- Tooling Benefits (Code Editor)
+						- Compile Time Errors <!-- .element: class="fragment" -->
+						- Tooling Benefits (Code Editor) <!-- .element: class="fragment" -->
 							- Code hinting
-						- Documentation of Source Code
-						- Improved Maintainability of Large Projects
+						- Documentation of Source Code <!-- .element: class="fragment" -->
+						- Improved Maintainability of Large Projects <!-- .element: class="fragment" -->
 					</script>
 				</section>
 
 				<section data-markdown>
 					<script type="text/template">
 						## 3. Disadvantages
-						- Third Party Types
-						- Compile Step
-						- "Making the Compiler Happy"
+						- Third Party Types <!-- .element: class="fragment" -->
+						- Compile Step <!-- .element: class="fragment" -->
+						- "Making the Compiler Happy" <!-- .element: class="fragment" -->
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Questions?
 					</script>
 				</section>
 
