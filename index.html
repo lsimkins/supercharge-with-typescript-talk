@@ -212,6 +212,18 @@
 
 				<section data-markdown>
 					<script type="text/template">
+						## Void
+
+						<pre class="language-typescript"><code class="language-typescript">
+							function alert(msg): void {
+						    alert(msg);
+							}
+						</code></pre>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
 						## Type Inference
 
 						<pre class="language-typescript"><code class="language-typescript">
@@ -313,10 +325,10 @@
 								animation?: 'fade' | 'slide' | 'none'
 							}
 
-							slideshow.initialize({image: 'kitting.png'});
+							lightbox.initialize({image: 'kitting.png'});
 
 							// Whoops, the compiler will alert you of your mistake.
-							slideshow.initialize({img: 'kitten.png'});
+							lightbox.initialize({img: 'kitten.png'});
 						</code></pre>
 					</script>
 				</section>
@@ -513,6 +525,8 @@
 				<section data-markdown>
 					<script type="text/template">
 						## Generics
+						Generics allow you to create components that work with a variety
+						of types rather than a single one.
 						<pre class="language-typescript"><code class="language-typescript">
 							class Node&#60;T&#62; {
 								parent?: Node&#60;T&#62;;
